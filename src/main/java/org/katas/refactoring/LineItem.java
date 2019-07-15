@@ -5,13 +5,13 @@ public class LineItem {
 
     private double price;
 
-    private int qty;
+    private int quantity;
 
-    public LineItem(String description, double price, int qty) {
+    public LineItem(String description, double price, int quantity) {
         super();
         this.description = description;
         this.price = price;
-        this.qty = qty;
+        this.quantity = quantity;
     }
 
     public String getDescription() {
@@ -23,10 +23,10 @@ public class LineItem {
     }
 
     public int getQuantity() {
-        return qty;
+        return quantity;
     }
 
     double totalAmount() {
-        return price * qty;
+        return price * quantity;
     }
 }

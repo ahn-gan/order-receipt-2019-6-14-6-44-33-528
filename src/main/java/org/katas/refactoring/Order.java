@@ -3,11 +3,11 @@ package org.katas.refactoring;
 import java.util.List;
 
 public class Order {
-    String name;
+    private String name;
 
-    String address;
+    private String address;
 
-    List<LineItem> lineItems;
+    private List<LineItem> lineItems;
 
     public Order(String name, String address, List<LineItem> lineItems) {
         this.name = name;

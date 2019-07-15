@@ -13,6 +13,8 @@ public class OrderReceipt {
     private final String TOTAL_AMOUNT = "Total Amount";
     private final String SALES_TAX_AND_TOTAL_AMOUNT_TEMPLATE = SALES_TAX + "\t%s" + TOTAL_AMOUNT + "\t%s";
     private final String ITEM_DETAIL_TEMPLATE = "%s\t%s\t%s\t%s\n";
+    private final double SALES_TAX_RATE = 0.10;
+
 
 
     private Order order;
@@ -36,8 +38,8 @@ public class OrderReceipt {
 //        output.append(order.getCustomerLoyaltyNumber());
 
         // prints lineItems
-        double totSalesTx = 0d;
-        double tot = 0d;
+        double totalSalesTax = 0d;
+        double totalAmount = 0d;
         for (LineItem lineItem : order.getLineItems()) {
 
             output.append(String.format(ITEM_DETAIL_TEMPLATE, lineItem.getDescription(), lineItem.getPrice(), lineItem.getQuantity(), lineItem.totalAmount()));
@@ -52,16 +54,16 @@ public class OrderReceipt {
 //            output.append('\n');
 
             // calculate sales tax @ rate of 10%
-            double salesTax = lineItem.totalAmount() * .10;
-            totSalesTx += salesTax;
+            double salesTax = lineItem.totalAmount() * SALES_TAX_RATE;
+            totalSalesTax += salesTax;
 
             // calculate total amount of lineItem = price * quantity + 10 % sales tax
-            tot += lineItem.totalAmount() + salesTax;
+            totalAmount += lineItem.totalAmount() + salesTax;
         }
 
         // prints the state tax
 
-        output.append(String.format(SALES_TAX_AND_TOTAL_AMOUNT_TEMPLATE, totSalesTx, tot));
+        output.append(String.format(SALES_TAX_AND_TOTAL_AMOUNT_TEMPLATE, totalSalesTax, totalAmount));
 //        output.append(SALES_TAX).append('\t').append(totSalesTx);
 
         // print total amount

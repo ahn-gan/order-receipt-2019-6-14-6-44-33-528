@@ -12,6 +12,7 @@ public class OrderReceipt {
     private final String SALES_TAX = "Sales Tax";
     private final String TOTAL_AMOUNT = "Total Amount";
     private final String SALES_TAX_AND_TOTAL_AMOUNT_TEMPLATE = SALES_TAX + "\t%s" + TOTAL_AMOUNT + "\t%s";
+    private final String ITEM_DETAIL_TEMPLATE = "%s\t%s\t%s\t%s\n";
 
 
     private Order order;
@@ -38,14 +39,17 @@ public class OrderReceipt {
         double totSalesTx = 0d;
         double tot = 0d;
         for (LineItem lineItem : order.getLineItems()) {
-            output.append(lineItem.getDescription());
-            output.append('\t');
-            output.append(lineItem.getPrice());
-            output.append('\t');
-            output.append(lineItem.getQuantity());
-            output.append('\t');
-            output.append(lineItem.totalAmount());
-            output.append('\n');
+
+            output.append(String.format(ITEM_DETAIL_TEMPLATE, lineItem.getDescription(), lineItem.getPrice(), lineItem.getQuantity(), lineItem.totalAmount()));
+
+//            output.append(lineItem.getDescription());
+//            output.append('\t');
+//            output.append(lineItem.getPrice());
+//            output.append('\t');
+//            output.append(lineItem.getQuantity());
+//            output.append('\t');
+//            output.append(lineItem.totalAmount());
+//            output.append('\n');
 
             // calculate sales tax @ rate of 10%
             double salesTax = lineItem.totalAmount() * .10;

@@ -7,6 +7,13 @@ package org.katas.refactoring;
  * total sales tax) and prints it.
  */
 public class OrderReceipt {
+
+    private final String HEADERS = "======Printing Orders======\n";
+    private final String SALES_TAX = "Sales Tax";
+    private final String TOTAL_AMOUNT = "Total Amount";
+    private final String SALES_TAX_AND_TOTAL_AMOUNT_TEMPLATE = SALES_TAX + "\t%s" + TOTAL_AMOUNT + "\t%s";
+
+
     private Order order;
 
     public OrderReceipt(Order order) {
@@ -16,13 +23,15 @@ public class OrderReceipt {
     public String printReceipt() {
         StringBuilder output = new StringBuilder();
 
-        // print headers
-        output.append("======Printing Orders======\n");
+        // print headers,customer name and address
+        output.append(HEADERS + order.getCustomerName() + order.getCustomerAddress());
 
-        // print date, bill no, customer name
+        // print date, bill no,
 //        output.append("Date - " + order.getDate();
-        output.append(order.getCustomerName());
-        output.append(order.getCustomerAddress());
+
+//        output.append(order.getCustomerName());
+//        output.append(order.getCustomerAddress());
+
 //        output.append(order.getCustomerLoyaltyNumber());
 
         // prints lineItems
@@ -47,10 +56,13 @@ public class OrderReceipt {
         }
 
         // prints the state tax
-        output.append("Sales Tax").append('\t').append(totSalesTx);
+
+        output.append(String.format(SALES_TAX_AND_TOTAL_AMOUNT_TEMPLATE, totSalesTx, tot));
+//        output.append(SALES_TAX).append('\t').append(totSalesTx);
 
         // print total amount
-        output.append("Total Amount").append('\t').append(tot);
+
+//        output.append(TOTAL_AMOUNT).append('\t').append(tot);
         return output.toString();
     }
 }

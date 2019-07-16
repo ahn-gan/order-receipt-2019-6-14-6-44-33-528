@@ -1,5 +1,7 @@
 package org.katas.refactoring;
 
+import java.util.List;
+
 /**
  * OrderReceipt prints the details of order including customer name, address, description, quantity,
  * price and amount. It also calculates the sales tax @ 10% and prints as part
@@ -22,32 +24,29 @@ public class OrderReceipt {
     }
 
     public String printReceipt() {
+        double totalSalesTax = getTotalSalesTax(order.getLineItems());
+        double totalAmount = getTotalAmount(order.getLineItems());
+        return getPrintString(totalSalesTax, totalAmount);
+    }
+
+    private String getPrintString(double totalSalesTax, double totalAmount) {
         StringBuilder output = new StringBuilder();
-
-        // print headers,customer name and address
         output.append(HEADERS + order.getCustomerName() + order.getCustomerAddress());
-
         // prints lineItems
-        double totalSalesTax = 0d;
-        double totalAmount = 0d;
         for (LineItem lineItem : order.getLineItems()) {
             output.append(String.format(ITEM_DETAIL_TEMPLATE, lineItem.getDescription(), lineItem.getPrice(), lineItem.getQuantity(), lineItem.calculateTotalAmount()));
-            totalSalesTax = getTotalSalesTax(totalSalesTax, lineItem);
-
-            // calculate total amount of lineItem = price * quantity + 10 % sales tax
-            totalAmount = getTotalAmount(totalAmount, lineItem);
         }
         output.append(String.format(SALES_TAX_AND_TOTAL_AMOUNT_TEMPLATE, totalSalesTax, totalAmount));
         return output.toString();
     }
 
-    private double getTotalSalesTax(double totalSalesTax, LineItem lineItem) {
-        totalSalesTax += lineItem.calculateTotalAmount() * SALES_TAX_RATE;
-        return totalSalesTax;
+    private double getTotalSalesTax(List<LineItem> lineItems) {
+        return (lineItems.stream().mapToDouble(LineItem::calculateTotalAmount).sum()) * SALES_TAX_RATE;
     }
 
-    private double getTotalAmount(double totalAmount, LineItem lineItem) {
-        totalAmount += lineItem.calculateTotalAmount() + lineItem.calculateTotalAmount() * SALES_TAX_RATE;
-        return totalAmount;
+    private double getTotalAmount(List<LineItem> lineItems) {
+        // calculate total amount of lineItem = price * quantity + 10 % sales tax
+        return lineItems.stream().mapToDouble(LineItem::calculateTotalAmount).sum() * (1 + SALES_TAX_RATE);
+
     }
 }
